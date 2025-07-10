@@ -209,7 +209,7 @@ const HeroSection: React.FC = () => {
       />
 
       {/* Judul Responsif */}
-      <h1 className="text-center mb-16 px-4">
+      <h1 className="text-center mb-16 pt-5">
         <SplitText 
           text="Selamat Datang di Portofolio Saya"
           duration={1.0}
