@@ -22,11 +22,9 @@ const GoogleDrivePDFViewer: React.FC<GoogleDrivePDFViewerProps> = ({
 }) => {
   const [viewMode, setViewMode] = useState<ViewMode>('embed');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const previewUrl = `https://drive.google.com/file/d/${driveFileId}/preview`;
-  const viewUrl = `https://drive.google.com/file/d/${driveFileId}/view`;
+  const previewUrl = `https://drive.google.com/file/d/ ${driveFileId}/preview`;
+  const viewUrl = `https://drive.google.com/file/d/ ${driveFileId}/view`;
   const downloadUrl = `https://drive.google.com/uc?export=download&id=${driveFileId}`;
-
   const handleLoad = (): void => setIsLoading(false);
 
   if (!isOpen) return null;
@@ -133,7 +131,7 @@ const GoogleDrivePDFViewer: React.FC<GoogleDrivePDFViewerProps> = ({
                     className="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-300 flex items-center justify-center gap-2"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     Download CV
                   </button>
@@ -197,13 +195,11 @@ const smoothScrollTo = (elementId: string): void => {
 const HeroSection: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const { scrollYProgress } = useScroll();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const GOOGLE_DRIVE_FILE_ID = "1evDgdH-4UejDWOFl0aGCwpwgeGgB7RSP";
   const toggleModal = (): void => setShowModal(!showModal);
 
   return (
-    <section id="home" className="min-h-screen w-full flex flex-col justify-center items-center p-8 bg-gradient-to-br from-gray-50 to-blue-50 overflow-hidden relative">
+    <section id="home" className="min-h-screen w-full flex flex-col justify-center items-center p-6 md:p-8 bg-gradient-to-br from-gray-50 to-blue-50 overflow-visible relative">
       {/* Google Drive PDF Viewer Modal */}
       <GoogleDrivePDFViewer
         isOpen={showModal}
@@ -212,38 +208,38 @@ const HeroSection: React.FC = () => {
         fileName="Naufal Firman Dhani"
       />
 
-      <h1 className="text-center mb-16">
-  <SplitText 
-    text="Selamat Datang di Portofolio Saya"
-    duration={1.0}
-    delay={50}
-    splitType="chars"
-    from={{ opacity: 0, y: 20 }}
-    to={{ opacity: 1, y: 0 }}
-    className="text-6xl md:text-6xl font-bold text-black block"
-  />
-</h1>
+      {/* Judul Responsif */}
+      <h1 className="text-center mb-16 px-4">
+        <SplitText 
+          text="Selamat Datang di Portofolio Saya"
+          duration={1.0}
+          delay={50}
+          splitType="chars"
+          from={{ opacity: 0, y: 20 }}
+          to={{ opacity: 1, y: 0 }}
+          className="text-[clamp(2rem,5vw,6rem)] font-bold text-black block leading-tight whitespace-normal text-center"
+        />
+      </h1>
 
       {/* Hero Section Content */}
       <motion.div className="max-w-4xl w-full relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-28">
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           <motion.div 
             className="flex-shrink-0"
             variants={scaleIn}
             initial="initial"
             animate="animate"
           >
-            <div className="w-80 h-80 sm:w-96 sm:h-110 relative group">
+            <div className="w-80 h-80 sm:w-96 sm:h-96 relative group">
               <Image
                 src="/profil.jpg"
                 alt="Foto Profil Naufal - Web Developer"
                 fill
-                className="rounded-xl border-6 border-[white] shadow-2xl object-cover group-hover:scale-105 transition-transform duration-300"
+                className="rounded-xl border-6 border-white shadow-2xl object-cover group-hover:scale-105 transition-transform duration-300"
                 priority
               />
             </div>
           </motion.div>
-
           <motion.div 
             className="flex-1 text-center lg:text-left"
             initial={{ opacity: 0, x: 60 }}
@@ -251,12 +247,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             {/* Nama dengan animasi SplitText */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-            >
-             <motion.h2 
+            <motion.h2 
               className="text-3xl md:text-4xl font-bold text-gray-800 mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -264,39 +255,26 @@ const HeroSection: React.FC = () => {
             >
               Halo, Saya <span className="text-blue-600 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">Naufal</span>
             </motion.h2>
-            </motion.div>
 
-            {/* Deskripsi dengan animasi SplitText */}
-            <motion.div
+            {/* Deskripsi */}
+            <motion.p 
+              className="text-xl text-gray-600 mb-6 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
             >
-              <motion.p 
-                className="text-xl text-gray-600 mb-6 leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
-              >
-                Saya adalah seorang Web Developer yang bersemangat dalam menciptakan pengalaman digital yang luar biasa.
-              </motion.p>
-            </motion.div>
-
-            <motion.div
+              Saya adalah seorang Web Developer yang bersemangat dalam menciptakan pengalaman digital yang luar biasa.
+            </motion.p>
+            <motion.p 
+              className="text-xl text-gray-600 mb-6 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.6 }}
             >
-              <motion.p 
-                className="text-xl text-gray-600 mb-6 leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
-              >
               Website ini adalah tempat saya menampilkan proyek-proyek dan keahlian saya. Saya senang berbagi perjalanan saya dalam dunia pengembangan web dan teknologi terkini.
-              </motion.p>
-            </motion.div>
+            </motion.p>
 
+            {/* Tombol Aksi */}
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
