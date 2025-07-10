@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import SplitText from '@/app/TextAnimations/SplitText/SplitText';
 
@@ -194,6 +195,7 @@ const smoothScrollTo = (elementId: string): void => {
 
 const HeroSection: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { scrollYProgress } = useScroll();
   const GOOGLE_DRIVE_FILE_ID = "1evDgdH-4UejDWOFl0aGCwpwgeGgB7RSP";
   const toggleModal = (): void => setShowModal(!showModal);
