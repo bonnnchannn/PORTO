@@ -232,7 +232,7 @@ const HeroSection: React.FC = () => {
             initial="initial"
             animate="animate"
           >
-            <div className="w-80 h-80 sm:w-96 sm:h-96 relative group">
+            <div className="w-90 h-90 sm:w-100 sm:h-120 relative group">
               <Image
                 src="/profil.jpg"
                 alt="Foto Profil Naufal - Web Developer"
