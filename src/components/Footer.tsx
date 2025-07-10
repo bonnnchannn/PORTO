@@ -119,10 +119,10 @@ export default function Footer() {
               <li className="text-gray-300">
                 <span className="block text-sm">Email:</span>
                 <a 
-                  href="mailto:kamu@email.com" 
+                  href="opang16012005@gmail.com" 
                   className="hover:text-white transition-colors"
                 >
-                  kamu@email.com
+                  opang16012005@gmail.com
                 </a>
               </li>
               <li className="text-gray-300">
