@@ -2,6 +2,9 @@
 "use client";
 
 import { Github, Mail, Linkedin, Heart } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
+
+
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -26,12 +29,21 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="md:col-span-2">
             <h3 className="text-2xl font-bold mb-4">
-              opan<span className="text-blue-400">G</span>
+            <span className="text-blue-400">N</span>aufal
             </h3>
             <p className="text-gray-300 mb-4 max-w-md">
               Web Developer yang passionate dalam menciptakan pengalaman digital yang menarik dan fungsional.
             </p>
             <div className="flex space-x-4">
+              <a 
+                href="https://wa.me/+6289616644626"  // Gantilah dengan nomor WhatsApp yang benar
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors"
+                aria-label="WhatsApp"
+              >
+                <FaWhatsapp className="w-5 h-5 text-green-500" />
+              </a>
               <a 
                 href="https://github.com/bonnnchannn" 
                 target="_blank" 

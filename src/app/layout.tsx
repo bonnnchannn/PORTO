@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Geist } from "next/font/google"; // Anda bisa menggunakan satu font jika Geist Mono tidak dipakai secara luas
+import { Geist } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -9,8 +9,8 @@ const geistSans = Geist({
 });
 
 export const metadata = {
-  title: "Portofolio | Naufal Firman Dhani", // Ganti dengan nama Anda
-  description: "Portofolio pribadi saya sebagai seorang web developer.",
+  title: "Portofolio | Naufal Firman Dhani",
+  description: "Portofolio pribadi saya sebagai seorang web developer yang berpengalaman dalam React.js, Next.js, dan teknologi web modern lainnya.",
 };
 
 export default function RootLayout({
@@ -19,18 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      {/* PERBAIKAN: Menambahkan `pt-16` ke body.
-        Ini akan mendorong semua konten ke bawah sejauh tinggi Navbar (h-16),
-        sehingga konten tidak tertutup oleh Navbar yang 'fixed'.
-      */}
-      <body className={`pt-20 ${geistSans.variable} antialiased bg-gray-100 text-gray-900`}>
+    <html lang="id" className="scroll-smooth">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      
+      <body className={`${geistSans.variable} antialiased bg-gray-100 text-gray-900`}>
         <Navbar />
         
-        {/* REKOMENDASI: Bungkus {children} dengan tag <main> */}
-        <main className="min-h-screen">
-          {children}
-        </main>
+        {/* Menghapus wrapper main karena sudah ada di page.tsx */}
+        {children}
         
         <Footer />
       </body>
