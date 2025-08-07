@@ -85,12 +85,12 @@ const certifications = [
     image: "/dicoding.png",
   },
   {
-    title: "Best Developer Award",
-    issuer: "Company Recognition",
-    date: "Dec 2023",
-    description: "Excellence in product development and technology innovation contributions.",
+    title: "Learn the basics of Cloud and Gen AI on AWS",
+    issuer: "Dicoding Indonesia",
+    date: "Aug 2025",
+    description: "Pelajari materi dasar Cloud dengan menggunakan AWS, dari konsep cloud computing, hingga penerapan generative AI dengan AWS.",
     color: "amber",
-    image: "/award.png",
+    image: "/dicoding.png",
   },
 ];
 
