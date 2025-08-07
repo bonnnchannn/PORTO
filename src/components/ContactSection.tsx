@@ -1,144 +1,139 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import { motion, Variants } from 'framer-motion';
+import { Send } from 'lucide-react';
 
-// Animation variants for fading in and sliding up
-const fadeInUp: Variants = {
-  initial: { opacity: 0, y: 60 },
-  whileInView: {
+// Varian animasi yang disederhanakan
+const sectionFadeIn: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.25, 0.25, 0.75],
+      ease: 'easeOut',
     },
   },
 };
 
 export default function ContactSection() {
-  // Fungsi untuk menangani pengiriman formulir
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formRef.current) return;
 
-    const form = e.target as HTMLFormElement;
+    setIsSubmitting(true);
+    setFormStatus(null);
 
-    // Kirim email menggunakan EmailJS
+    // PERUBAHAN: Menggunakan environment variables untuk keamanan
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!;
+
     emailjs
-      .sendForm(
-        'service_hcsllys', // Ganti dengan Service ID Anda dari EmailJS
-        'template_0tdu139', // Ganti dengan Template ID Anda dari EmailJS
-        form, // Kirim elemen form itu sendiri
-        'ThFKHfblZzhGn2Wsi' // Ganti dengan User ID Anda dari EmailJS
-      )
+      .sendForm(serviceId, templateId, formRef.current, publicKey)
       .then(
-        (result) => {
-          console.log(result.text);
-          alert('Pesan berhasil dikirim!');
+        () => {
+          setFormStatus({ message: 'Pesan berhasil dikirim! Terima kasih.', type: 'success' });
+          formRef.current?.reset();
         },
         (error) => {
-          console.log(error.text);
-          alert('Terjadi kesalahan, pesan gagal dikirim.');
+          console.error('FAILED...', error);
+          setFormStatus({ message: 'Maaf, terjadi kesalahan. Silakan coba lagi.', type: 'error' });
         }
-      );
+      )
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
-    <section
-      id="contact"
-      className="min-h-screen w-full flex flex-col justify-center items-center p-8 bg-gradient-to-br from-white to-indigo-100"
-    >
-      <motion.div
-        variants={fadeInUp}
-        initial="initial"
-        whileInView="whileInView"
-        viewport={{ once: true, amount: 0.3 }}
-        className="max-w-4xl text-center"
-      >
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold mb-6 text-gray-800 tracking-wide"
-          whileInView={{
-            scale: [0.9, 1.05, 1],
-            textShadow: [
-              '0px 0px 0px rgba(59,130,246,0)',
-              '0px 0px 20px rgba(59,130,246,0.3)',
-              '0px 0px 0px rgba(59,130,246,0)',
-            ],
-          }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-        >
-          Hubungi Saya
-        </motion.h2>
-
-        <motion.p
-          className="text-lg text-gray-600 mb-8 leading-relaxed max-w-xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          Tertarik untuk bekerja sama atau punya pertanyaan? Jangan ragu untuk menghubungi saya
-          melalui email atau LinkedIn. Saya akan segera merespon.
-        </motion.p>
-
+    // PERUBAHAN: Latar belakang lebih simpel
+    <section id="contact" className="w-full bg-gray-50 py-24 sm:py-32">
+      <div className="max-w-4xl mx-auto px-6 lg:px-8">
         <motion.div
-          className="space-y-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          viewport={{ once: true }}
+          className="text-center"
+          variants={sectionFadeIn}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
         >
-          {/* Contact Form */}
-          <motion.div
-            className="bg-white p-6 rounded-lg shadow-lg max-w-xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-2xl font-semibold text-gray-700 mb-4">
-              Atau, kirim pesan langsung
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
+          {/* PERUBAHAN: Animasi judul lebih sederhana */}
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+            Mari Terhubung
+          </h2>
+          <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+            Punya proyek atau pertanyaan? Saya siap membantu mewujudkan ide Anda. Kirimkan pesan di bawah ini.
+          </p>
+
+          {/* PERUBAHAN: Desain form di dalam 'card' */}
+          <div className="mt-12 max-w-xl mx-auto bg-white p-8 rounded-2xl border border-gray-200/80 shadow-sm">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="name" className="text-sm font-medium text-gray-700 text-left block">Nama</label>
                 <input
+                  id="name"
                   type="text"
-                  name="name"
-                  placeholder="Nama Anda"
+                  name="user_name" // 'name' adalah keyword, lebih baik gunakan 'user_name'
+                  placeholder="your name"
                   required
-                  className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 />
               </div>
-              <div>
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700 text-left block">Email</label>
                 <input
+                  id="email"
                   type="email"
-                  name="email"
-                  placeholder="Email Anda"
+                  name="user_email"
+                  placeholder="your @email.com"
                   required
-                  className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 />
               </div>
-              <div>
+              <div className="space-y-2">
+                 <label htmlFor="message" className="text-sm font-medium text-gray-700 text-left block">Pesan</label>
                 <textarea
+                  id="message"
                   name="message"
-                  placeholder="Pesan Anda"
-                  rows={4}
+                  placeholder="Tulis pesan Anda di sini..."
+                  rows={5}
                   required
-                  className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
                 ></textarea>
               </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all duration-300"
-              >
-                Kirim Pesan
-              </button>
+
+              {/* PERUBAHAN: Tombol dengan state 'loading' dan notifikasi */}
+              <div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
+                  {!isSubmitting && <Send className="w-4 h-4" />}
+                </button>
+              </div>
+
+              {/* PERUBAHAN: Notifikasi dinamis pengganti 'alert()' */}
+              {formStatus && (
+                <div className={`mt-4 text-sm p-3 rounded-lg ${
+                  formStatus.type === 'success'
+                    ? 'bg-green-50 text-green-700'
+                    : 'bg-red-50 text-red-700'
+                }`}>
+                  {formStatus.message}
+                </div>
+              )}
             </form>
-          </motion.div>
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }

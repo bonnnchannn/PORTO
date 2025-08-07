@@ -1,406 +1,302 @@
 'use client';
 
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
+import { motion, easeInOut, easeOut } from 'framer-motion';
 
 // Animation variants
-const fadeInUp: Variants = {
-  initial: { 
-    opacity: 0, y: 60 
-  },
-  whileInView: { 
-    opacity: 1, y: 0, transition: {duration: 0.8, ease: [0.25, 0.25, 0.25, 0.75] 
-    }
-  }
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const scaleIn: Variants = {
-  initial: { 
-    opacity: 0, scale: 0.8 
-  },
-  whileInView: { 
-    opacity: 1, scale: 1, transition: {duration: 0.6, ease: "easeOut" 
-    }
-  }
-};
-
-const staggerContainer: Variants = {
-  hidden: { 
-    opacity: 0 
-  },
-  show: {
-    opacity: 1, transition: {staggerChildren: 0.15, delayChildren: 0.1
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: easeInOut,
     },
   },
 };
 
-const staggerItem: Variants = {
-  hidden: { 
-    opacity: 0, 
-    y: 30 
-  },
-  show: { 
-    opacity: 1, 
-    y: 0,
-    transition: {duration: 0.6, ease: "easeOut"
-    }
+const staggerContainer = {
+  initial: {},
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
   },
 };
 
-// Helper function untuk delayed animations
-const createDelayedAnimation = (baseAnimation: Variants, delay: number): Variants => {
-  const newAnimation: Variants = {};
-  
-  Object.keys(baseAnimation).forEach(key => {
-    if (key === 'whileInView' && typeof baseAnimation[key] === 'object') {
-      newAnimation[key] = {
-        ...baseAnimation[key],
-        transition: {
-          ...(baseAnimation[key].transition || {}),
-          delay
-        }
-      };
-    } else {
-      newAnimation[key] = baseAnimation[key];
-    }
-  });
-  
-  return newAnimation;
+const staggerItem = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: easeOut,
+    },
+  },
 };
+
+// Experience data
+const webinars = [
+  {
+    title: "React Advanced Patterns",
+    date: "Mar 2024",
+    description: "Deep dive into advanced React patterns, custom hooks, and performance optimization techniques.",
+    tags: ["React Hooks", "Performance", "Best Practices"],
+    color: "blue",
+    image: "/react.png", // letakkan di /public/react.png
+  },
+  {
+    title: "AI & Machine Learning",
+    date: "Jan 2024",
+    description: "Comprehensive workshop on AI/ML implementation in web development and modern frameworks.",
+    tags: ["Machine Learning", "TensorFlow", "AI Integration"],
+    color: "purple",
+    image: "/ai.png",
+  },
+  {
+    title: "Next.js Performance",
+    date: "Feb 2024",
+    description: "Advanced Next.js optimization techniques, SSR, and production-ready best practices.",
+    tags: ["Next.js", "SSR", "Optimization"],
+    color: "gray",
+    image: "/nextjs.png",
+  },
+];
+
+const certifications = [
+  {
+    title: "JavaScript Programming Basics",
+    issuer: "Dicoding Indonesia",
+    date: "Aug 2025",
+    description: "Fundamentals of JavaScript programming, ES6 features, and automated testing concepts.",
+    color: "blue",
+    image: "/dicoding.png",
+  },
+  {
+    title: "Web Programming Basics",
+    issuer: "Dicoding Indonesia",
+    date: "Oct 2024",
+    description: "Core HTML and CSS components for front-end web development foundation.",
+    color: "green",
+    image: "/dicoding.png",
+  },
+  {
+    title: "Best Developer Award",
+    issuer: "Company Recognition",
+    date: "Dec 2023",
+    description: "Excellence in product development and technology innovation contributions.",
+    color: "amber",
+    image: "/award.png",
+  },
+];
+
+type ColorKey = "blue" | "purple" | "gray" | "green" | "amber";
+
+const getColorClasses = (color: string) => {
+  const colorMap: Record<ColorKey, string> = {
+    blue: "bg-blue-50 border-blue-200 text-blue-600",
+    purple: "bg-purple-50 border-purple-200 text-purple-600",
+    gray: "bg-gray-50 border-gray-200 text-gray-600",
+    green: "bg-green-50 border-green-200 text-green-600",
+    amber: "bg-amber-50 border-amber-200 text-amber-600",
+  };
+  return colorMap[color as ColorKey] || colorMap.blue;
+};
+
+type ExperienceCardProps = {
+  title: string;
+  subtitle?: string;
+  date: string;
+  description: string;
+  image?: string;
+  icon?: React.ReactNode;
+  color: string;
+  tags?: string[];
+};
+
+const ExperienceCard = ({
+  title,
+  subtitle,
+  date,
+  description,
+  image,
+  icon,
+  color,
+  tags,
+}: ExperienceCardProps) => (
+  <motion.div
+    variants={staggerItem}
+    className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+    whileHover={{ y: -4 }}
+  >
+    <div className="flex items-start gap-4">
+      {/* Icon or Image */}
+      <div className={`w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center ${getColorClasses(color)}`}>
+        {image ? (
+          <Image
+            src={image}
+            alt={title}
+            width={48}
+            height={48}
+            className="object-cover w-full h-full"
+          />
+        ) : (
+          <span className="text-xl">{icon}</span>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-start justify-between mb-2">
+          <div className="min-w-0 flex-1">
+            <h3 className="font-semibold text-gray-900 text-lg leading-tight">
+              {title}
+            </h3>
+            {subtitle && (
+              <p className="text-sm text-gray-600 mt-1">{subtitle}</p>
+            )}
+          </div>
+          <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded-full whitespace-nowrap ml-3">
+            {date}
+          </span>
+        </div>
+
+        <p className="text-gray-600 text-sm leading-relaxed mb-4">
+          {description}
+        </p>
+
+        {tags && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-lg font-medium"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </motion.div>
+);
 
 export default function ExperienceSection() {
   return (
-    <section id="experience" className="min-h-screen w-full flex flex-col justify-center items-center p-8 bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-7xl w-full">
-        <motion.h2 
+    <section id="experience" className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-6 md:px-8">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
           variants={fadeInUp}
           initial="initial"
-          whileInView="whileInView"
+          whileInView="animate"
           viewport={{ once: true, amount: 0.3 }}
-          className="text-4xl md:text-5xl font-bold mb-12 text-gray-800 text-center"
         >
-          Learning Journey & Achievements
-        </motion.h2>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Webinar & Training Photos Section */}
-          <motion.div 
-            variants={createDelayedAnimation(fadeInUp, 0.2)}
+          <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+            Learning & Growth
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            Experience & Achievements
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Continuous learning through workshops, certifications, and hands-on experience in modern web technologies.
+          </p>
+        </motion.div>
+
+        {/* Content Grid */}
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Webinars */}
+          <motion.div
+            variants={staggerContainer}
             initial="initial"
-            whileInView="whileInView"
-            viewport={{ once: true, amount: 0.3 }}
-            className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.2 }}
           >
-            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-              <motion.span 
-                className="w-3 h-3 bg-green-500 rounded-full mr-3"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              Webinar & Training Journey
-            </h3>
-            
-            <motion.div 
-              className="space-y-6"
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              <motion.div 
-                variants={staggerItem}
-                className="group cursor-pointer p-4 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-300"
-                whileHover={{ scale: 1.02, y: -3 }}
-              >
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="relative w-full sm:w-32 h-32 rounded-lg overflow-hidden shadow-md flex-shrink-0">
-                    <Image
-                      src="/react.png"
-                      alt="Webinar React Advanced"
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                     onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElem = e.currentTarget.nextElementSibling;
-                        if (nextElem instanceof HTMLAnchorElement) {
-                          nextElem.style.display = 'flex';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-blue-500/80 hidden items-center justify-center text-white">
-                      <div className="text-center">
-                        <div className="text-3xl mb-1">⚛️</div>
-                        <p className="text-xs">React Webinar</p>
-                      </div>
-                    </div>
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-gray-800 text-lg">React Advanced Patterns</h4>
-                      <span className="text-sm text-blue-600 font-medium bg-blue-100 px-2 py-1 rounded-full">
-                        Maret 2024
-                      </span>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-3 leading-relaxed">
-                      Webinar mendalam tentang advanced React patterns, custom hooks, dan performance optimization techniques untuk aplikasi React modern.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-2 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">React Hooks</span>
-                      <span className="px-2 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">Performance</span>
-                      <span className="px-2 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">Best Practices</span>
-                    </div>
-                  </div>
+            <motion.div variants={staggerItem} className="mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
+                <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 </div>
-              </motion.div>
-              
-              <motion.div 
-                variants={staggerItem}
-                className="group cursor-pointer p-4 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 transition-all duration-300"
-                whileHover={{ scale: 1.02, y: -3 }}
-              >
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="relative w-full sm:w-32 h-32 rounded-lg overflow-hidden shadow-md flex-shrink-0">
-                    <Image
-                      src="/images/webinar-ai.jpg"
-                      alt="Webinar AI & Machine Learning"
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                     onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElem = e.currentTarget.nextElementSibling;
-                         if (nextElem instanceof HTMLAnchorElement) {
-                          nextElem.style.display = 'flex';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-purple-500/80 hidden items-center justify-center text-white">
-                      <div className="text-center">
-                        <div className="text-3xl mb-1">🤖</div>
-                        <p className="text-xs">AI Webinar</p>
-                      </div>
-                    </div>
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-gray-800 text-lg">AI & Machine Learning</h4>
-                      <span className="text-sm text-purple-600 font-medium bg-purple-100 px-2 py-1 rounded-full">
-                        Januari 2024
-                      </span>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-3 leading-relaxed">
-                      Workshop komprehensif tentang implementasi AI dan machine learning dalam web development, termasuk integrasi dengan framework modern.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-2 py-1 bg-purple-200 text-purple-800 text-xs rounded-full">Machine Learning</span>
-                      <span className="px-2 py-1 bg-purple-200 text-purple-800 text-xs rounded-full">TensorFlow</span>
-                      <span className="px-2 py-1 bg-purple-200 text-purple-800 text-xs rounded-full">AI Integration</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                variants={staggerItem}
-                className="group cursor-pointer p-4 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 transition-all duration-300"
-                whileHover={{ scale: 1.02, y: -3 }}
-              >
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="relative w-full sm:w-32 h-32 rounded-lg overflow-hidden shadow-md flex-shrink-0">
-                    <Image
-                      src="/images/webinar-nextjs.jpg"
-                      alt="Webinar Next.js Performance"
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElem = e.currentTarget.nextElementSibling;
-                        if (nextElem instanceof HTMLAnchorElement) {
-                          nextElem.style.display = 'flex';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gray-800/80 hidden items-center justify-center text-white">
-                      <div className="text-center">
-                        <div className="text-3xl mb-1">▲</div>
-                        <p className="text-xs">Next.js Webinar</p>
-                      </div>
-                    </div>
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-gray-800 text-lg">Next.js Performance Optimization</h4>
-                      <span className="text-sm text-gray-600 font-medium bg-gray-200 px-2 py-1 rounded-full">
-                        Februari 2024
-                      </span>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-3 leading-relaxed">
-                      Deep dive session tentang teknik optimasi Next.js, server-side rendering, dan best practices untuk aplikasi production-ready.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-2 py-1 bg-gray-200 text-gray-800 text-xs rounded-full">Next.js</span>
-                      <span className="px-2 py-1 bg-gray-200 text-gray-800 text-xs rounded-full">SSR</span>
-                      <span className="px-2 py-1 bg-gray-200 text-gray-800 text-xs rounded-full">Optimization</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                Workshops & Training
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Recent webinars and training sessions I&#39;ve attended to stay current with technology.
+              </p>
             </motion.div>
+
+            <div className="space-y-4">
+              {webinars.map((webinar, index) => (
+                <ExperienceCard
+                  key={index}
+                  title={webinar.title}
+                  date={webinar.date}
+                  description={webinar.description}
+                  color={webinar.color}
+                  image={webinar.image}
+                  tags={webinar.tags}
+                />
+              ))}
+            </div>
           </motion.div>
-          
-          {/* Sertifikasi & Achievement Section */}
-          <motion.div 
-            variants={createDelayedAnimation(fadeInUp, 0.4)}
+
+          {/* Certifications */}
+          <motion.div
+            variants={staggerContainer}
             initial="initial"
-            whileInView="whileInView"
-            viewport={{ once: true, amount: 0.3 }}
-            className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.2 }}
           >
-            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-              <motion.span 
-                className="w-3 h-3 bg-yellow-500 rounded-full mr-3"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-              />
-              Sertifikasi & Achievements
-            </h3>
-            
-            <motion.div 
-              className="space-y-6"
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              <motion.div 
-                variants={staggerItem}
-                className="p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition-all duration-300 cursor-pointer border-l-4 border-blue-500"
-                whileHover={{ scale: 1.02, x: 5 }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-lg flex-shrink-0">
-                    <Image
-                      src="/dicoding.png"
-                      alt="Sertifikat Dicoding"
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElem = e.currentTarget.nextElementSibling;
-                         if (nextElem instanceof HTMLAnchorElement) {
-                          nextElem.style.display = 'flex';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-blue-500 hidden items-center justify-center text-white text-2xl">
-                      📜
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="text-lg font-bold text-blue-600">Dicoding Indonesia</h4>
-                      <span className="text-xs text-blue-500 bg-blue-100 px-2 py-1 rounded-full">
-                        Maret 2023
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 font-medium mb-2">Frontend Web Developer Expert</p>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Sertifikasi advanced dalam pengembangan frontend dengan fokus pada performance optimization dan modern JavaScript frameworks.
-                    </p>
-                  </div>
+            <motion.div variants={staggerItem} className="mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
+                <div className="w-6 h-6 bg-amber-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
                 </div>
-              </motion.div>
-              
-              <motion.div 
-                variants={staggerItem}
-                className="p-6 bg-gradient-to-r from-green-50 to-green-100 rounded-xl hover:from-green-100 hover:to-green-200 transition-all duration-300 cursor-pointer border-l-4 border-green-500"
-                whileHover={{ scale: 1.02, x: 5 }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-lg flex-shrink-0">
-                    <Image
-                      src="/images/google-cert.jpg"
-                      alt="Sertifikat Google"
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElem = e.currentTarget.nextElementSibling;
-                        if (nextElem instanceof HTMLAnchorElement) {
-                          nextElem.style.display = 'flex';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-green-500 hidden items-center justify-center text-white text-2xl">
-                      🏆
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="text-lg font-bold text-green-600">Google Developer</h4>
-                      <span className="text-xs text-green-500 bg-green-100 px-2 py-1 rounded-full">
-                        Januari 2024
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 font-medium mb-2">AI & Web Development Certification</p>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Sertifikasi komprehensif dalam pengembangan aplikasi AI dan integrasi machine learning dengan teknologi web modern.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                variants={staggerItem}
-                className="p-6 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl hover:from-purple-100 hover:to-purple-200 transition-all duration-300 cursor-pointer border-l-4 border-purple-500"
-                whileHover={{ scale: 1.02, x: 5 }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-lg flex-shrink-0">
-                    <Image
-                      src="/images/award-photo.jpg"
-                      alt="Penghargaan Best Developer"
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                     onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElem = e.currentTarget.nextElementSibling;
-                         if (nextElem instanceof HTMLAnchorElement) {
-                          nextElem.style.display = 'flex';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-purple-500 hidden items-center justify-center text-white text-2xl">
-                      🥇
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="text-lg font-bold text-purple-600">Best Developer Award</h4>
-                      <span className="text-xs text-purple-500 bg-purple-100 px-2 py-1 rounded-full">
-                        Desember 2023
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 font-medium mb-2">Company Annual Achievement</p>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Penghargaan untuk kontribusi terbaik dalam pengembangan produk dan inovasi teknologi di perusahaan.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+                Certifications & Awards
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Formal certifications and recognitions that validate my skills and expertise.
+              </p>
             </motion.div>
+
+            <div className="space-y-4">
+              {certifications.map((cert, index) => (
+                <ExperienceCard
+                  key={index}
+                  title={cert.title}
+                  subtitle={cert.issuer}
+                  date={cert.date}
+                  description={cert.description}
+                  color={cert.color}
+                  image={cert.image}
+                />
+              ))}
+            </div>
           </motion.div>
         </div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          className="text-center mt-16"
+          variants={fadeInUp}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <div className="inline-flex items-center gap-4">
+            <div className="h-px w-12 bg-gray-300"></div>
+            <span className="text-sm text-gray-500 font-medium">
+              Always learning, always growing
+            </span>
+            <div className="h-px w-12 bg-gray-300"></div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

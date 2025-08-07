@@ -2,10 +2,10 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { ArrowUpRightSquare, Github } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react'; // Menggunakan ArrowUpRight untuk konsistensi
 import { motion, Variants } from 'framer-motion';
 
-// Data untuk proyek
+// Data untuk proyek (tidak ada perubahan)
 const projectsData = [
   {
     title: 'Aplikasi E-Commerce',
@@ -17,7 +17,7 @@ const projectsData = [
   },
   {
     title: 'Recomendation System',
-    description: 'Sebuah aplikasi rekomendasi film',
+    description: 'Sebuah aplikasi rekomendasi film yang dibangun menggunakan algoritma machine learning sederhana.',
     image: '/pythonn.png',
     tags: ['Python', 'Streamlit'],
     liveUrl: 'https://opangflix.streamlit.app/',
@@ -25,49 +25,40 @@ const projectsData = [
   },
   {
     title: 'Prototype Dating App',
-    description: 'Prototype dating app yang di bangun menggunakan figma.',
+    description: 'Prototype aplikasi kencan yang dirancang untuk memberikan pengalaman pengguna yang intuitif dan menarik.',
     image: '/monamour.png',
     tags: ['Figma'],
     liveUrl: 'https://www.figma.com/design/PuaKmurO6hOI7Sj4N4fdhD/mon-amour--Copy-?node-id=1-3&t=oOb6mgSONkLIW9KT-1',
-    repoUrl: 'https://github.com/your-username/task-app',
+    repoUrl: 'https://github.com/your-username/task-app', // Pastikan URL ini benar
   },
 ];
 
-// Animation variants
-const fadeInUp: Variants = {
-  initial: { 
-    opacity: 0, 
-    y: 60 
-  },
-  whileInView: { 
+// PERUBAHAN: Varian animasi disederhanakan dan disatukan
+const sectionFadeIn: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
     opacity: 1, 
     y: 0,
     transition: { 
       duration: 0.8, 
-      ease: [0.25, 0.25, 0.25, 0.75] 
+      ease: 'easeOut'
     }
   }
 };
 
 const staggerContainer: Variants = {
-  hidden: { 
-    opacity: 0 
-  },
-  show: {
-    opacity: 1,
+  hidden: {},
+  visible: {
     transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1
+      staggerChildren: 0.15,
+      delayChildren: 0.2
     },
   },
 };
 
-const staggerItem: Variants = {
-  hidden: { 
-    opacity: 0, 
-    y: 30 
-  },
-  show: { 
+const itemFadeInUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
     opacity: 1, 
     y: 0,
     transition: {
@@ -79,117 +70,81 @@ const staggerItem: Variants = {
 
 export default function ProjectsSection() {
   return (
+    // PERUBAHAN: Background lebih simpel dan animasi di-handle oleh varian
     <motion.section 
       id="projects" 
-      className="bg-gradient-to-br from-slate-50 to-gray-100 py-20 sm:py-24 px-4 sm:px-6 lg:px-8 w-full"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
+      className="bg-gray-50 py-24 px-4 sm:px-6 lg:px-8 w-full"
+      variants={sectionFadeIn}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
     >
       <div className="max-w-7xl mx-auto">
-        <motion.div 
-          variants={fadeInUp}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true, amount: 0.3 }}
-          className="text-center"
-        >
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl"
-            whileInView={{ 
-              scale: [0.9, 1.05, 1],
-              color: ["#111827", "#2563eb", "#111827"]
-            }}
-            transition={{ duration: 1.2 }}
-            viewport={{ once: true }}
-          >
-            Proyek yang Pernah Saya Buat
-          </motion.h2>
-          <p className="mt-4 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-            Berikut adalah beberapa karya pilihan yang menunjukkan keahlian saya dalam teknologi web modern.
+        {/* PERUBAHAN: Animasi header disederhanakan */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+            Proyek Pilihan Saya
+          </h2>
+          <p className="mt-4 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">
+            Berikut adalah beberapa karya yang menunjukkan keahlian saya dalam merancang dan membangun solusi digital.
           </p>
-        </motion.div>
+        </div>
         
         <motion.div 
-          className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           variants={staggerContainer}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
         >
           {projectsData.map((project, index) => (
+            // PERUBAHAN: Desain kartu dirombak total
             <motion.div 
               key={index}
-              variants={staggerItem}
-              className="group flex flex-col bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
-              whileHover={{ 
-                y: -10,
-                rotateY: 5,
-                rotateX: 5,
-              }}
-              style={{ transformStyle: "preserve-3d" }}
+              variants={itemFadeInUp}
+              className="group bg-white rounded-2xl border border-gray-200/80 overflow-hidden transition-all duration-300 hover:shadow-xl"
+              whileHover={{ y: -6 }} // Efek hover lebih simpel
             >
-              <div className="overflow-hidden">
+              <div className="overflow-hidden h-56">
                 <Image 
                   src={project.image}
                   alt={`Screenshot dari ${project.title}`}
                   width={400}
                   height={400}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
                 />
               </div>
               
               <div className="p-6 flex flex-col flex-grow">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag, tagIndex) => (
-                    <motion.span 
-                      key={tagIndex} 
-                      className="px-3 py-1 text-xs font-semibold text-sky-800 bg-sky-100 rounded-full"
-                      whileHover={{ 
-                        scale: 1.1,
-                        backgroundColor: "#0ea5e9",
-                        color: "#ffffff"
-                      }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {tag}
-                    </motion.span>
-                  ))}
+                {/* PERUBAHAN: Tata letak header kartu baru dengan link di kanan */}
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-lg font-bold text-gray-900 pr-4">
+                    {project.title}
+                  </h3>
+                  <div className="flex items-center space-x-3 flex-shrink-0">
+                    <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" title="Source Code" className="text-gray-400 hover:text-gray-800 transition-colors">
+                      <Github className="w-5 h-5" />
+                    </a>
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" title="Live Demo" className="text-gray-400 hover:text-blue-600 transition-colors">
+                      <ArrowUpRight className="w-5 h-5" />
+                    </a>
+                  </div>
                 </div>
-                
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                  {project.title}
-                </h3>
-                <p className="text-gray-600 text-sm flex-grow leading-relaxed">
+
+                <p className="text-gray-600 text-sm flex-grow leading-relaxed mb-5">
                   {project.description}
                 </p>
                 
-                <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
-                  <motion.a 
-                    href={project.liveUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
-                    whileHover={{ scale: 1.05, x: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label={`Lihat demo langsung dari ${project.title}`}
-                  >
-                    <ArrowUpRightSquare className="w-4 h-4" />
-                    Live Demo
-                  </motion.a>
-                  <motion.a 
-                    href={project.repoUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
-                    whileHover={{ scale: 1.05, x: -5 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label={`Lihat source code dari ${project.title}`}
-                  >
-                    <Github className="w-4 h-4" />
-                    Source Code
-                  </motion.a>
+                {/* PERUBAHAN: Warna tags lebih netral */}
+                <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-100">
+                  {project.tags.map((tag, tagIndex) => (
+                    <span 
+                      key={tagIndex} 
+                      className="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </motion.div>
