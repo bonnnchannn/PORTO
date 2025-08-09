@@ -42,28 +42,28 @@ const staggerItem = {
 // Experience data
 const webinars = [
   {
-    title: "React Advanced Patterns",
-    date: "Mar 2024",
-    description: "Deep dive into advanced React patterns, custom hooks, and performance optimization techniques.",
-    tags: ["React Hooks", "Performance", "Best Practices"],
-    color: "blue",
-    image: "/react.png", // letakkan di /public/react.png
-  },
-  {
-    title: "AI & Machine Learning",
-    date: "Jan 2024",
+    title: "Build with AI x Google Cloud Roadshow Surabaya 2025",
+    date: "May 2025",
     description: "Comprehensive workshop on AI/ML implementation in web development and modern frameworks.",
     tags: ["Machine Learning", "TensorFlow", "AI Integration"],
     color: "purple",
-    image: "/ai.png",
+    image: "/gdg.jpg",
   },
   {
-    title: "Next.js Performance",
-    date: "Feb 2024",
-    description: "Advanced Next.js optimization techniques, SSR, and production-ready best practices.",
-    tags: ["Next.js", "SSR", "Optimization"],
+    title: "Pelatihan Bidang Teknologi Informasi (PIBITI 2023)",
+    date: "Des 2023",
+    description: "Basic training in web development and materials on website creation",
+    tags: ["HTML", "CSS", "Javascript"],
     color: "gray",
-    image: "/nextjs.png",
+    image: "/himatifa.png",
+  },
+  {
+    title: "AI NEXUS: BRIDGING ACADEMY AND INDUSTRY",
+    date: "Oct 2023",
+    description: "Webinars and briefings on the current industrial world that must master artificial intelligence (AI).",
+    tags: ["AI Integration", "Performance", "Industry Trends"],
+    color: "blue",
+    image: "/himatifa.png", 
   },
 ];
 
