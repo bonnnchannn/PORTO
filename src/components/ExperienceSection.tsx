@@ -88,7 +88,7 @@ const certifications = [
     title: "Learn the basics of Cloud and Gen AI on AWS",
     issuer: "Dicoding Indonesia",
     date: "Aug 2025",
-    description: "Pelajari materi dasar Cloud dengan menggunakan AWS, dari konsep cloud computing, hingga penerapan generative AI dengan AWS.",
+    description: "Learn the basics of Cloud using AWS, from cloud computing concepts to the application of generative artificial intelligence with AWS.",
     color: "amber",
     image: "/dicoding.png",
   },

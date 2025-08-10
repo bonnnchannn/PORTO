@@ -44,7 +44,7 @@ const projectsData = [
     title: 'Topologi jaringan menggunakan GNS3',
     description: 'Merancang dan mengimplementasikan topologi jaringan menggunakan GNS3 untuk simulasi jaringan yang kompleks',
     image: '/gns3.png',
-    tags: ['Figma', 'UI/UX', 'Prototyping'],
+    tags: ['GNS3', 'Mikrotik', 'Winbox'],
     liveUrl: 'https://figma.com/your-mobile-design',
     repoUrl: 'https://github.com/your-username/mobile-ui',
   },
